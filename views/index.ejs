@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+</head>
+<body>
+    <h1>Mini Messageboard</h1>
+
+    <h2>Messages:</h2>
+    <ul>
+        <% messages.forEach(message => { %>
+            <li>
+                <strong><%= message.user %>:</strong>
+                <%= message.text %> <br>
+                <em>Posted on <%= message.added.toDateString() %></em>
+            </li>
+        <% }) %>
+    </ul>
+
+    <br>
+    <a href="/new">Create a New Message</a>
+</body>
+</html>

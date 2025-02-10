@@ -1,22 +1,43 @@
-// app.js
 const express = require("express");
-const app = express();
-const authorRouter = require("./routes/authorRouter");
-const bookRouter = require("./routes/bookRouter");
-const indexRouter = require("./routes/indexRouter");
+const app = express ();
+const port = 3000;
 
-app.use("/authors", authorRouter);
-app.use("/books", bookRouter);
-app.use("/", indexRouter);
+app.set("view engine", "ejs");
 
-const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`My first Express app - listening on port ${PORT}!`);
+app.use(express.urlencoded({ extended: true }));
+
+const messages = [
+    {
+        text: "Hi there!",
+        user: "Amando",
+        added: new Date()
+    },
+    {
+        text: "Hello World!",
+        user: "Charles",
+        added: new Date()
+    }
+];
+
+app.get('/', (req,res) =>{
+    res.render('index', {title:"mini messageboard", messages})
 });
 
+// app.get('/', (req,res) => {
+//     res.render("index", {title:"Home Page"})
+// });
+app.get('/new', (req,res) => {
+    res.render('new', {title: "new message"})
+});
 
-// Every thrown error in the application or the previous middleware function calling `next` with an error as an argument will eventually go to this middleware function
-app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(500).send(err);
+app.post("/new", (req, res) => {
+    const { user, text } = req.body;
+    if (user && text) {
+        messages.push({ text, user, added: new Date() });
+    }
+    res.redirect("/");
+});
+
+app.listen (port ,() =>{
+    console.log(`the server is running on port:${port}`)
 });
